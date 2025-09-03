@@ -3,7 +3,7 @@ import { supabaseAdmin } from "../../../lib/supabaseServer";
 export default async function handler(req,res) {
   try {
     const { count, error } = await supabaseAdmin
-      .from("contacts")
+      .from("ralph_xpert")
       .select("id", { head: true, count: "exact" });
 
     if (error) throw error;
