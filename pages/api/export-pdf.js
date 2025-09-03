@@ -8,7 +8,7 @@ export default async function handler(req,res) {
   if (!verify.ok) return res.status(401).json({ error: "Unauthorized" });
 
   try {
-    const { data } = await supabaseAdmin.from("contacts").select("*").order("created_at",{ascending:true});
+    const { data } = await supabaseAdmin.from("ralph_xpert").select("*").order("created_at",{ascending:true});
     // create PDF
     const doc = new jsPDF({ unit: 'pt', format: 'a4' });
     doc.setFontSize(14);
