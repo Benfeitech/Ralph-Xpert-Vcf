@@ -20,7 +20,7 @@ export default async function handler(req,res) {
   if (!verify.ok) return res.status(401).json({ error: "Unauthorized" });
 
   try {
-    const { data, error } = await supabaseAdmin.from("contacts").select("*").order("created_at", { ascending: true });
+    const { data, error } = await supabaseAdmin.from("ralph_xpert").select("*").order("created_at", { ascending: true });
     if (error) throw error;
     const vcfText = (data || []).map(vcardFor).join("\r\n");
     const filename = `ralph-xpert-contacts-${new Date().toISOString().slice(0,10)}.vcf`;
