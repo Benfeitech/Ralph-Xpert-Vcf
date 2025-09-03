@@ -44,7 +44,7 @@ export default function Admin() {
 
   async function loadContacts() {
     try {
-      const res = await fetch("/api/contact");
+      const res = await fetch("/api/contacts");
       const j = await res.json();
       if (res.ok) setContacts(j.ralph_xpert || []);
     } catch {}
