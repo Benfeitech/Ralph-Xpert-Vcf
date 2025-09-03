@@ -8,14 +8,14 @@ export default async function handler(req, res) {
   try {
     // check duplicate
     const { data: existing } = await supabaseAdmin
-      .from("contacts").select("id").eq("phone", phone).limit(1);
+      .from("ralph_xpert").select("id").eq("phone", phone).limit(1);
 
     if (existing?.length) {
       return res.status(200).json({ exists: true });
     }
 
     const { data, error } = await supabaseAdmin
-      .from("contacts")
+      .from("ralph_xpert")
       .insert({ name, phone })
       .select()
       .single();
