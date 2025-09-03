@@ -47,3 +47,37 @@ html, body, #__next {
   70% { transform: scale(1.6); opacity: 0.12; }
   100% { transform: scale(2); opacity: 0; }
 }
+/* Custom neon utilities */
+.text-neon-green {
+  color: #39ff14 !important;
+}
+
+.bg-neon-green {
+  background-color: #39ff14 !important;
+}
+
+.border-neon-green {
+  border-color: #39ff14 !important;
+}
+
+.shadow-glow {
+  box-shadow: 0 0 5px #39ff14,
+              0 0 10px #39ff14,
+              0 0 20px #39ff14,
+              0 0 40px #39ff14;
+}
+
+.drop-shadow-glow {
+  filter: drop-shadow(0 0 8px #39ff14);
+}
+
+/* Animations */
+@keyframes fade-in {
+  from { opacity: 0; transform: translateY(15px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+.animate-fade-in {
+  animation: fade-in 1s ease-out forwards;
+}
+
