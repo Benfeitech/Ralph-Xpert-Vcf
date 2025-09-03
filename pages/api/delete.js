@@ -10,7 +10,7 @@ export default async function handler(req,res) {
   if (!id) return res.status(400).json({ error: "Missing id" });
 
   try {
-    const { error } = await supabaseAdmin.from("contacts").delete().eq("id", id);
+    const { error } = await supabaseAdmin.from("ralph_xpert").delete().eq("id", id);
     if (error) throw error;
     return res.status(200).json({ ok: true });
   } catch (err) {
