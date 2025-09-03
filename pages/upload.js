@@ -30,7 +30,7 @@ export default function Upload() {
         setStatus("Contact already exists.");
       } else {
         setStatus("Contact uploaded successfully, redirecting to community page...");
-        setTimeout(()=> router.push("/community"), 3000);
+        setTimeout(()=> router.push("/community"), 2500);
       }
     } catch(err) {
       setStatus("Upload failed.");
@@ -44,11 +44,11 @@ export default function Upload() {
       <form onSubmit={onSubmit} className="mt-6 grid gap-4">
         <label className="grid gap-1">
           <span className="text-sm text-gray-300">Full Name</span>
-          <input value={name} onChange={e=>setName(e.target.value)} placeholder="e.g. John Doe" className="px-4 py-3 rounded-xl bg-bgsoft border border-white/10 outline-none focus:ring-accent"/>
+          <input value={name} onChange={e=>setName(e.target.value)} placeholder="name..." className="px-4 py-3 rounded-xl bg-bgsoft border border-white/10 outline-none focus:ring-accent"/>
         </label>
         <label className="grid gap-1">
           <span className="text-sm text-gray-300">Phone Number</span>
-          <input value={phone} onChange={e=>setPhone(e.target.value)} placeholder="+234 801 234 5678" className="px-4 py-3 rounded-xl bg-bgsoft border border-white/10 outline-none focus:ring-accent"/>
+          <input value={phone} onChange={e=>setPhone(e.target.value)} placeholder="e.g +254xxx..." className="px-4 py-3 rounded-xl bg-bgsoft border border-white/10 outline-none focus:ring-accent"/>
         </label>
         <div className="flex items-center gap-3">
           <button type="submit" className="inline-flex items-center gap-2 btn-primary px-4 py-2 rounded-2xl">
