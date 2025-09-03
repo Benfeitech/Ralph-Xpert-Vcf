@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { useRouter } from "next/router";
-import { Upload as UploadIcon } from "lucide-react";
+import { Upload as UploadIcon, User, Phone } from "lucide-react";
 
 export default function Upload() {
   const [name, setName] = useState("");
@@ -15,13 +15,12 @@ export default function Upload() {
   async function onSubmit(e) {
     e.preventDefault();
     if (!name.trim() || !phone.trim()) {
-      setStatus("Please fill name and phone.");
+      setStatus("⚠️ Please fill name and phone.");
       return;
     }
-    setStatus("Uploading...");
+    setStatus("⏳ Uploading...");
 
     try {
-      // ✅ always append suffix
       const finalName = name.trim().endsWith("RXP")
         ? name.trim()
         : name.trim() + " RXP";
@@ -37,56 +36,69 @@ export default function Upload() {
 
       const json = await res.json();
       if (!res.ok) {
-        setStatus(json?.error || "Upload failed");
+        setStatus(json?.error || "❌ Upload failed");
       } else if (json.exists) {
-        setStatus("Contact already exists.");
+        setStatus("⚠️ Contact already exists.");
       } else {
-        setStatus(
-          "Contact uploaded successfully, redirecting to community page..."
-        );
+        setStatus("✅ Contact uploaded! Redirecting...");
         setTimeout(() => router.push("/community"), 2500);
       }
     } catch (err) {
-      setStatus("Upload failed.");
+      setStatus("❌ Upload failed.");
     }
   }
 
   return (
-    <div className="max-w-lg mx-auto px-4 py-8">
-      <h2 className="text-2xl font-bold">Upload Contact</h2>
-      <p className="text-sm text-gray-300 mt-2">
+    <div className="max-w-lg mx-auto px-4 py-10 text-center animate-fade-in">
+      <h2 className="text-3xl font-bold text-neon-green drop-shadow-glow">
+        Upload Contact
+      </h2>
+      <p className="text-sm text-neon-green/80 mt-2 tracking-wide">
         Add your details to join Ralph Xpert community.
       </p>
-      <form onSubmit={onSubmit} className="mt-6 grid gap-4">
-        <label className="grid gap-1">
-          <span className="text-sm text-gray-300">Full Name</span>
+
+      <form
+        onSubmit={onSubmit}
+        className="mt-8 grid gap-6 bg-black/40 backdrop-blur-lg p-6 rounded-2xl border border-neon-green/50 shadow-glow"
+      >
+        <label className="grid gap-2">
+          <span className="flex items-center gap-2 text-neon-green text-sm">
+            <User size={16} /> Full Name
+          </span>
           <input
             value={name}
             onChange={(e) => setName(e.target.value)}
-            placeholder="name..."
-            className="px-4 py-3 rounded-xl bg-bgsoft border border-white/10 outline-none focus:ring-accent"
+            placeholder="Enter full name..."
+            className="px-4 py-3 rounded-xl bg-black/70 border border-neon-green/40 text-neon-green placeholder-neon-green/40 outline-none focus:ring-2 focus:ring-neon-green transition-all duration-300"
           />
         </label>
-        <label className="grid gap-1">
-          <span className="text-sm text-gray-300">Phone Number</span>
+
+        <label className="grid gap-2">
+          <span className="flex items-center gap-2 text-neon-green text-sm">
+            <Phone size={16} /> Phone Number
+          </span>
           <input
             value={phone}
             onChange={(e) => setPhone(e.target.value)}
-            placeholder="e.g +254xxx..."
-            className="px-4 py-3 rounded-xl bg-bgsoft border border-white/10 outline-none focus:ring-accent"
+            placeholder="e.g. +254..."
+            className="px-4 py-3 rounded-xl bg-black/70 border border-neon-green/40 text-neon-green placeholder-neon-green/40 outline-none focus:ring-2 focus:ring-neon-green transition-all duration-300"
           />
         </label>
-        <div className="flex items-center gap-3">
+
+        <div className="flex items-center justify-center">
           <button
             type="submit"
-            className="inline-flex items-center gap-2 btn-primary px-4 py-2 rounded-2xl"
+            className="inline-flex items-center gap-2 px-6 py-3 rounded-2xl font-semibold text-black bg-neon-green hover:scale-105 hover:shadow-glow transition-all duration-300"
           >
-            <UploadIcon size={16} /> Upload
+            <UploadIcon size={18} /> Upload
           </button>
         </div>
       </form>
-      {status && <div className="mt-4 text-sm">{status}</div>}
+
+      {status && (
+        <div className="mt-6 text-neon-green animate-pulse">{status}</div>
+      )}
     </div>
   );
-        }
-      
+          }
+          
