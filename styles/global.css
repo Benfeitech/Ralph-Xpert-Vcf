@@ -1,0 +1,49 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* custom globals */
+:root {
+  --bg-main: #0D1117;
+  --bg-soft: #161B22;
+  --accent: #2FD771;
+  --muted: #9AA5B1;
+}
+
+html, body, #__next {
+  height: 100%;
+  background: var(--bg-main);
+  color: #E6EEF3;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+/* small UI touches */
+.btn-primary {
+  background: var(--accent);
+  color: #000;
+}
+.card {
+  background: #0f1519;
+  border: 1px solid rgba(255,255,255,0.04);
+}
+.pulse-live {
+  position: relative;
+}
+.pulse-live::before {
+  content: '';
+  position: absolute;
+  left: -6px;
+  top: -6px;
+  width: 10px;
+  height: 10px;
+  border-radius: 999px;
+  background: var(--accent);
+  animation: ping 1.6s infinite;
+  opacity: 0.75;
+}
+@keyframes ping {
+  0% { transform: scale(0.6); opacity: 0.9; }
+  70% { transform: scale(1.6); opacity: 0.12; }
+  100% { transform: scale(2); opacity: 0; }
+}
