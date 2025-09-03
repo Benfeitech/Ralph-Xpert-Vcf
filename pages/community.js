@@ -8,7 +8,7 @@ export default function Community() {
     let mounted = true;
     async function load() {
       try {
-        const res = await fetch("/api/ralph_xpert/count");
+        const res = await fetch("/api/contacts/count");
         const json = await res.json();
         if (mounted && json?.count !== undefined) setCount(json.count);
       } catch {}
