@@ -16,7 +16,7 @@ export default function MessagesPage() {
 
   async function handleLogin(e) {
     e.preventDefault();
-    if (password === process.env.NEXT_PUBLIC_ADMIN_PASS || password === process.env.ADMIN_PASS) {
+    if (password === process.env.ADMIN_PASS) {
       setUnlocked(true);
       loadMessages();
     } else {
