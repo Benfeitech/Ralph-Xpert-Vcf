@@ -1,94 +1,74 @@
-// pages/admin/messages.js
-import { useState } from "react";
-import { supabase } from "../../lib/supabaseClient";
+import { useState, useEffect } from "react";
+import { supabase } from "../../lib/supabaseServer";
 
-export default function AdminMessages() {
-  const [password, setPassword] = useState("");
-  const [unlocked, setUnlocked] = useState(false);
+export default function MessagesPage() {
   const [messages, setMessages] = useState([]);
-
-  async function handleLogin(e) {
-    e.preventDefault();
-
-    const res = await fetch("/api/admin/login", {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ password }),
-    });
-
-    if (res.ok) {
-      setUnlocked(true);
-      await loadMessages();
-    } else {
-      alert("❌ Wrong password");
-    }
-  }
+  const [unlocked, setUnlocked] = useState(false);
+  const [password, setPassword] = useState("");
 
   async function loadMessages() {
     const { data, error } = await supabase
       .from("messages")
       .select("*")
-      .order("created_at", { ascending: false });
+      .order("created_at", { ascending: false }); // ✅ latest first
+    if (!error) setMessages(data);
+  }
 
-    if (error) {
-      console.error("Supabase fetch error:", error);
+  async function handleLogin(e) {
+    e.preventDefault();
+    if (password === process.env.NEXT_PUBLIC_ADMIN_PASS || password === process.env.ADMIN_PASS) {
+      setUnlocked(true);
+      loadMessages();
     } else {
-      setMessages(data || []);
+      alert("Wrong password!");
     }
   }
 
-  return (
-    <div className="max-w-4xl mx-auto px-6 py-8">
-      {!unlocked ? (
-        <form
-          onSubmit={handleLogin}
-          className="max-w-sm mx-auto p-6 rounded-xl bg-gray-900 shadow"
-        >
-          <h1 className="text-xl font-bold mb-4 text-center">🔑 Admin Login</h1>
+  if (!unlocked) {
+    return (
+      <div className="max-w-sm mx-auto p-8">
+        <h1 className="text-xl font-bold mb-4">Admin Login</h1>
+        <form onSubmit={handleLogin} className="space-y-4">
           <input
             type="password"
             value={password}
             onChange={(e) => setPassword(e.target.value)}
-            placeholder="Enter password"
-            className="w-full p-3 rounded-lg bg-gray-800 text-white border border-gray-700"
+            placeholder="Enter admin password"
+            className="w-full p-2 border rounded"
           />
           <button
             type="submit"
-            className="mt-4 w-full bg-green-600 py-2 rounded-xl font-semibold hover:bg-green-700 transition"
+            className="bg-green-600 text-white px-4 py-2 rounded w-full"
           >
             Login
           </button>
         </form>
-      ) : (
-        <div>
-          <h1 className="text-2xl font-bold mb-6">📩 Submitted Messages</h1>
-          {messages.length === 0 ? (
-            <p className="text-gray-400">No messages yet.</p>
-          ) : (
-            <div className="space-y-4">
-              {messages.map((m) => (
-                <div
-                  key={m.id}
-                  className="p-4 rounded-xl bg-gray-800 text-white border border-gray-700"
-                >
-                  <div className="flex justify-between items-center">
-                    <h3 className="font-semibold">{m.full_name}</h3>
-                    <span className="text-xs text-gray-400">
-                      {new Date(m.created_at).toLocaleString()}
-                    </span>
-                  </div>
-                  <p className="text-sm text-gray-300">
-                    {m.email} {m.phone && `| ${m.phone}`}
-                  </p>
-                  <p className="mt-2 text-green-400 font-medium">{m.subject}</p>
-                  <p className="mt-1">{m.message}</p>
-                </div>
-              ))}
-            </div>
-          )}
-        </div>
+      </div>
+    );
+  }
+
+  return (
+    <div className="max-w-3xl mx-auto p-8">
+      <h1 className="text-2xl font-bold mb-6">📩 Submitted Messages</h1>
+      {messages.length === 0 && (
+        <p className="text-gray-500">No messages yet.</p>
       )}
+      <ul className="space-y-4">
+        {messages.map((msg) => (
+          <li key={msg.id} className="p-4 border rounded-lg bg-gray-50">
+            <div className="flex justify-between items-center mb-2">
+              <span className="font-semibold">{msg.full_name}</span>
+              <span className="text-xs text-gray-400">
+                {new Date(msg.created_at).toLocaleString()}
+              </span>
+            </div>
+            <p className="text-sm text-gray-600">{msg.email} • {msg.phone}</p>
+            <p className="mt-2 font-semibold">{msg.subject}</p>
+            <p className="mt-1">{msg.message}</p>
+          </li>
+        ))}
+      </ul>
     </div>
   );
-        }
-    
+              }
+      
