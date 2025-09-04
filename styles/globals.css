@@ -172,7 +172,8 @@ html, body, #__next {
   margin-top: 1rem; /* mt-4 */
 }
 
-/* Individual quick action button */
+
+/* Individual quick action button -- NEON GREEN STYLE */
 .quick-action-btn {
   display: flex;
   align-items: center;
@@ -180,17 +181,22 @@ html, body, #__next {
   gap: 0.5rem; /* gap-2 */
   padding: 0.75rem; /* p-3 */
   border-radius: 0.5rem; /* rounded-lg */
-  background-color: #374151; /* bg-gray-700 */
-  color: #ffffff;
+  font-weight: 600; /* Bolder text */
   text-decoration: none;
-  font-weight: 500;
-  transition: background-color 0.2s ease-in-out;
+  
+  /* --- Neon Green Effect --- */
+  background-color: #39FF14; /* A vibrant neon green */
+  color: #111827; /* Dark text for high contrast and readability */
+  border: 1px solid #39FF14;
+  box-shadow: 0 0 8px rgba(57, 255, 20, 0.6); /* Creates the "glow" */
+  transition: all 0.2s ease-in-out; /* Smooth transition for hover effects */
 }
 
 .quick-action-btn:hover {
-  background-color: #4b5563; /* hover:bg-gray-600 */
+  background-color: #48ff29; /* Make it slightly brighter on hover */
+  box-shadow: 0 0 16px rgba(57, 255, 20, 0.9); /* Intensify the glow */
+  transform: translateY(-2px); /* Add a subtle lift effect */
 }
-
 /* FAQ link section */
 .faq-section {
   text-align: center;
