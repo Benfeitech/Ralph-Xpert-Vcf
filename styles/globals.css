@@ -81,3 +81,131 @@ html, body, #__next {
   animation: fade-in 1s ease-out forwards;
 }
 
+
+
+/* Main container for the new contact section */
+.contact-details-card {
+  margin-top: 4rem; /* mt-16 */
+  padding: 2rem; /* p-8 */
+  border-radius: 1rem; /* rounded-2xl */
+  background-color: #111827; /* This is a dark background, similar to 'card' */
+  color: #d1d5db; /* Default text color */
+}
+
+/* "Our contact details" title */
+.contact-details-card h3 {
+  font-size: 1.25rem; /* text-xl */
+  font-weight: 600; /* font-semibold */
+  display: flex;
+  align-items: center;
+  gap: 0.5rem; /* gap-2 */
+  color: #ffffff;
+}
+
+/* Red location pin icon */
+.contact-details-card h3 svg.location-icon {
+  color: #ef4444; /* text-red-500 */
+}
+
+/* Subtitle text */
+.contact-details-card .subtitle {
+  color: #9ca3af; /* text-gray-400 */
+  margin-top: 0.25rem; /* mt-1 */
+}
+
+/* Container for the list of contact items */
+.contact-items-container {
+  margin-top: 1.5rem; /* mt-6 */
+  display: flex;
+  flex-direction: column;
+  gap: 1rem; /* space-y-4 */
+}
+
+/* Individual contact item (Email, Phone, etc.) */
+.contact-item {
+  display: flex;
+  align-items: flex-start;
+  gap: 1rem; /* gap-4 */
+  padding: 1rem; /* p-4 */
+  border-radius: 0.5rem; /* rounded-lg */
+  background-color: #1f2937; /* bg-gray-800 */
+  border: 1px solid #374151; /* border-gray-700 */
+}
+
+.contact-item .icon {
+  color: #4ade80; /* text-green-400 */
+  margin-top: 0.25rem; /* mt-1 */
+  flex-shrink: 0;
+}
+
+.contact-item h4 {
+  font-weight: 600; /* font-semibold */
+  color: #ffffff; /* text-white */
+  margin: 0;
+}
+
+.contact-item .value {
+  color: #d1d5db; /* text-gray-300 */
+  margin: 0.125rem 0 0 0;
+}
+
+.contact-item .sub-value {
+  font-size: 0.75rem; /* text-xs */
+  color: #6b7281; /* text-gray-500 */
+  margin: 0.25rem 0 0 0;
+}
+
+/* "Quick actions" section */
+.quick-actions {
+  margin-top: 2.5rem; /* mt-10 */
+}
+
+.quick-actions h3 {
+  font-size: 1.125rem; /* text-lg */
+}
+
+/* Grid for the quick action buttons */
+.quick-actions-grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 1rem; /* gap-4 */
+  margin-top: 1rem; /* mt-4 */
+}
+
+/* Individual quick action button */
+.quick-action-btn {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem; /* gap-2 */
+  padding: 0.75rem; /* p-3 */
+  border-radius: 0.5rem; /* rounded-lg */
+  background-color: #374151; /* bg-gray-700 */
+  color: #ffffff;
+  text-decoration: none;
+  font-weight: 500;
+  transition: background-color 0.2s ease-in-out;
+}
+
+.quick-action-btn:hover {
+  background-color: #4b5563; /* hover:bg-gray-600 */
+}
+
+/* FAQ link section */
+.faq-section {
+  text-align: center;
+  margin-top: 2.5rem; /* mt-10 */
+}
+
+.faq-link {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem; /* gap-2 */
+  color: #9ca3af; /* text-gray-400 */
+  text-decoration: none;
+  transition: color 0.2s ease-in-out;
+}
+
+.faq-link:hover {
+  color: #ffffff; /* hover:text-white */
+  }
