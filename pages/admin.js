@@ -1,9 +1,19 @@
 import { useEffect, useState } from "react";
-import { Shield, Trash2, Download, FileText, LogOut } from "lucide-react";
+import {
+  Shield,
+  Trash2,
+  Download,
+  FileText,
+  LogOut,
+  MessageCircle,
+  X,
+} from "lucide-react";
 
 export default function Admin() {
   const [authed, setAuthed] = useState(false);
   const [contacts, setContacts] = useState([]);
+  const [messages, setMessages] = useState([]);
+  const [showMessages, setShowMessages] = useState(false);
   const [user, setUser] = useState("");
   const [pass, setPass] = useState("");
   const [loading, setLoading] = useState(false);
@@ -22,10 +32,12 @@ export default function Admin() {
   }
 
   useEffect(() => {
-    // run auth check, then load contacts only if authed
     (async () => {
       const ok = await checkAuth();
-      if (ok) await loadContacts();
+      if (ok) {
+        await loadContacts();
+        await loadMessages();
+      }
     })();
   }, []);
 
@@ -42,8 +54,9 @@ export default function Admin() {
       if (res.ok) {
         setAuthed(true);
         await loadContacts();
+        await loadMessages();
       } else {
-        const j = await res.json().catch(()=>({}));
+        const j = await res.json().catch(() => ({}));
         alert(j?.error || "Login failed");
       }
     } catch (err) {
@@ -57,12 +70,13 @@ export default function Admin() {
     await fetch("/api/admin/logout", { method: "POST" });
     setAuthed(false);
     setContacts([]);
+    setMessages([]);
   }
 
   async function loadContacts() {
     try {
       const res = await fetch("/api/contacts");
-      const j = await res.json().catch(()=>null);
+      const j = await res.json().catch(() => null);
       console.log("GET /api/contacts", res.status, j);
 
       if (!res.ok) {
@@ -71,15 +85,9 @@ export default function Admin() {
         return;
       }
 
-      // robust parsing: support different response shapes
       const maybeArray =
-        j?.ralph_xpert ??
-        j?.contacts ??
-        j?.data ??
-        j ??
-        null;
+        j?.ralph_xpert ?? j?.contacts ?? j?.data ?? j ?? null;
 
-      // if server returned an object with { data: [..], error: null }
       const finalArray = Array.isArray(maybeArray)
         ? maybeArray
         : Array.isArray(maybeArray?.data)
@@ -90,6 +98,31 @@ export default function Admin() {
     } catch (err) {
       console.error("loadContacts error:", err);
       setContacts([]);
+    }
+  }
+
+  async function loadMessages() {
+    try {
+      const res = await fetch("/api/messages");
+      const j = await res.json().catch(() => null);
+      if (!res.ok) {
+        console.error("Failed to fetch messages", j);
+        setMessages([]);
+        return;
+      }
+      setMessages(j?.messages ?? []);
+    } catch (err) {
+      console.error("loadMessages error:", err);
+      setMessages([]);
+    }
+  }
+
+  async function markMessagesRead() {
+    try {
+      await fetch("/api/messages/read", { method: "POST" });
+      setMessages((prev) => prev.map((m) => ({ ...m, read: true })));
+    } catch (err) {
+      console.error("markMessagesRead error:", err);
     }
   }
 
@@ -117,6 +150,8 @@ export default function Admin() {
   function downloadPDF() {
     window.location.href = "/api/export-pdf";
   }
+
+  const unreadCount = messages.filter((m) => !m.read).length;
 
   if (!authed) {
     return (
@@ -153,21 +188,34 @@ export default function Admin() {
           <Shield size={18} /> Admin Dashboard
         </h2>
         <div className="flex items-center gap-2">
-          <button onClick={downloadVCF} className="inline-flex items-center gap-2 px-3 py-2 rounded-xl border border-white/10">
+          <button
+            onClick={downloadVCF}
+            className="inline-flex items-center gap-2 px-3 py-2 rounded-xl border border-white/10"
+          >
             <Download size={16} /> Download VCF
           </button>
-          <button onClick={downloadPDF} className="inline-flex items-center gap-2 px-3 py-2 rounded-xl border border-white/10">
+          <button
+            onClick={downloadPDF}
+            className="inline-flex items-center gap-2 px-3 py-2 rounded-xl border border-white/10"
+          >
             <FileText size={16} /> Download PDF
           </button>
-          <button onClick={deleteAll} className="inline-flex items-center gap-2 px-3 py-2 rounded-xl border border-white/10">
+          <button
+            onClick={deleteAll}
+            className="inline-flex items-center gap-2 px-3 py-2 rounded-xl border border-white/10"
+          >
             <Trash2 size={16} /> Delete All
           </button>
-          <button onClick={logout} className="inline-flex items-center gap-2 px-3 py-2 rounded-xl border border-white/10">
+          <button
+            onClick={logout}
+            className="inline-flex items-center gap-2 px-3 py-2 rounded-xl border border-white/10"
+          >
             <LogOut size={16} /> Logout
           </button>
         </div>
       </div>
 
+      {/* Contacts table */}
       <div className="mt-6 card rounded-2xl overflow-hidden">
         <table className="w-full text-sm">
           <thead className="text-left text-gray-300/80">
@@ -185,9 +233,16 @@ export default function Admin() {
                 <td className="px-4 py-2">{i + 1}</td>
                 <td className="px-4 py-2">{c.name}</td>
                 <td className="px-4 py-2">{c.phone}</td>
-                <td className="px-4 py-2">{c.created_at ? new Date(c.created_at).toLocaleString() : "-"}</td>
                 <td className="px-4 py-2">
-                  <button onClick={() => deleteOne(c.id)} className="inline-flex items-center gap-2 px-3 py-1.5 rounded-xl border border-white/10">
+                  {c.created_at
+                    ? new Date(c.created_at).toLocaleString()
+                    : "-"}
+                </td>
+                <td className="px-4 py-2">
+                  <button
+                    onClick={() => deleteOne(c.id)}
+                    className="inline-flex items-center gap-2 px-3 py-1.5 rounded-xl border border-white/10"
+                  >
                     <Trash2 size={14} /> Delete
                   </button>
                 </td>
@@ -195,7 +250,10 @@ export default function Admin() {
             ))}
             {contacts.length === 0 && (
               <tr>
-                <td colSpan={5} className="px-4 py-8 text-center text-gray-400">
+                <td
+                  colSpan={5}
+                  className="px-4 py-8 text-center text-gray-400"
+                >
                   No contacts yet.
                 </td>
               </tr>
@@ -203,7 +261,58 @@ export default function Admin() {
           </tbody>
         </table>
       </div>
+
+      {/* Floating Messages Button */}
+      <div className="fixed bottom-6 right-6">
+        <button
+          onClick={() => {
+            setShowMessages(!showMessages);
+            if (!showMessages) markMessagesRead();
+          }}
+          className="relative bg-blue-600 hover:bg-blue-700 text-white p-4 rounded-full shadow-lg"
+        >
+          <MessageCircle size={24} />
+          {unreadCount > 0 && (
+            <span className="absolute -top-1 -right-1 bg-red-600 text-xs font-bold px-2 py-0.5 rounded-full">
+              {unreadCount}
+            </span>
+          )}
+        </button>
+      </div>
+
+      {/* Popup for messages */}
+      {showMessages && (
+        <div className="fixed bottom-20 right-6 w-96 max-h-[70vh] bg-bgsoft border border-white/10 rounded-2xl shadow-lg overflow-y-auto">
+          <div className="flex items-center justify-between px-4 py-3 border-b border-white/10">
+            <h3 className="font-bold">Messages</h3>
+            <button onClick={() => setShowMessages(false)}>
+              <X size={18} />
+            </button>
+          </div>
+          <div>
+            {messages.length === 0 ? (
+              <p className="p-4 text-gray-400 text-sm">No messages yet.</p>
+            ) : (
+              messages.map((m, i) => (
+                <div key={m.id ?? i} className="p-4 border-b border-white/5">
+                  <p className="font-semibold">
+                    {m.name} ({m.email})
+                  </p>
+                  <p className="text-sm text-gray-400">{m.phone}</p>
+                  <p className="text-sm text-gray-300 mt-2">{m.topic}</p>
+                  <p className="mt-2">{m.message}</p>
+                  <p className="text-xs text-gray-500 mt-1">
+                    {m.created_at
+                      ? new Date(m.created_at).toLocaleString()
+                      : "-"}
+                  </p>
+                </div>
+              ))
+            )}
+          </div>
+        </div>
+      )}
     </div>
   );
-    }
-        
+          }
+                                      
