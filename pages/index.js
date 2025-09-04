@@ -1,6 +1,18 @@
 import Link from "next/link";
 import { motion } from "framer-motion";
-import { Zap, Upload, Users, Star, Phone, MessageCircle } from "lucide-react";
+import {
+  Zap,
+  Upload,
+  Users,
+  Star,
+  Phone,
+  MessageCircle,
+  Mail,
+  Clock,
+  Rocket,
+  HelpCircle,
+  MapPin,
+} from "lucide-react"; // I've added the new icons here
 import { useEffect, useState } from "react";
 
 export default function Home() {
@@ -84,6 +96,18 @@ export default function Home() {
       setStatus("❌ Failed to send. Try again.");
     }
   };
+
+  // Helper component for contact items to avoid repetition
+  const ContactInfo = ({ icon, title, value, subValue }) => (
+    <div className="flex gap-4 items-start p-4 rounded-lg bg-gray-800 border border-gray-700">
+      <div className="text-green-400 mt-1">{icon}</div>
+      <div>
+        <h4 className="font-semibold text-white">{title}</h4>
+        <p className="text-gray-300">{value}</p>
+        <p className="text-xs text-gray-500">{subValue}</p>
+      </div>
+    </div>
+  );
 
   return (
     <div className="max-w-5xl mx-auto px-4 py-8">
@@ -251,7 +275,90 @@ export default function Home() {
           </form>
         </div>
       </div>
+
+      {/* ================================================================== */}
+      {/* ============ NEW CONTACT DETAILS SECTION FROM IMAGE ============== */}
+      {/* ================================================================== */}
+
+      <div className="card mt-16 p-8 rounded-2xl">
+        <h3 className="text-xl font-semibold flex items-center gap-2">
+          <MapPin size={20} className="text-red-500" />
+          Our contact details
+        </h3>
+        <p className="text-gray-400 mt-1">
+          Several ways to contact us according to your preferences.
+        </p>
+
+        <div className="mt-6 space-y-4">
+          <ContactInfo
+            icon={<Mail size={24} />}
+            title="E-mail"
+            value="elogekenguer@gmail.com"
+            subValue="Response within 24 hours"
+          />
+          <ContactInfo
+            icon={<Phone size={24} />}
+            title="Phone"
+            value="+1 849 459 7173"
+            subValue="Mon-Fri 9am-6pm"
+          />
+          <ContactInfo
+            icon={<MessageCircle size={24} />} // Using MessageCircle for WhatsApp
+            title="WhatsApp"
+            value="+1 849 459 7173"
+            subValue="24/7 Available"
+          />
+          <ContactInfo
+            icon={<Clock size={24} />}
+            title="Schedules"
+            value="9am - 6pm"
+            subValue="Monday to Friday"
+          />
+        </div>
+
+        <div className="mt-10">
+          <h3 className="text-lg font-semibold flex items-center gap-2">
+            <Rocket size={20} />
+            Quick actions
+          </h3>
+          <div className="grid grid-cols-2 gap-4 mt-4">
+            <a
+              href="https://wa.me/18494597173"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="flex items-center justify-center gap-2 p-3 rounded-lg bg-gray-700 hover:bg-gray-600 transition"
+            >
+              <MessageCircle size={16} /> WhatsApp Direct
+            </a>
+            <a
+              href="tel:+18494597173"
+              className="flex items-center justify-center gap-2 p-3 rounded-lg bg-gray-700 hover:bg-gray-600 transition"
+            >
+              <Phone size={16} /> Call now
+            </a>
+            <a
+              href="mailto:elogekenguer@gmail.com"
+              className="flex items-center justify-center gap-2 p-3 rounded-lg bg-gray-700 hover:bg-gray-600 transition"
+            >
+              <Mail size={16} /> Send an email
+            </a>
+            <Link href="/">
+              <a className="flex items-center justify-center gap-2 p-3 rounded-lg bg-gray-700 hover:bg-gray-600 transition">
+                🏠 Return to home
+              </a>
+            </Link>
+          </div>
+        </div>
+
+        <div className="text-center mt-10">
+          <Link href="/faq">
+            <a className="inline-flex items-center gap-2 text-gray-400 hover:text-white">
+              <HelpCircle size={18} />
+              Frequently Asked Questions
+            </a>
+          </Link>
+        </div>
+      </div>
     </div>
   );
-    }
-      
+        }
