@@ -1,5 +1,5 @@
 import Link from "next/link";
-import { motion } from "framer-motion";
+import { motion, AnimatePresence } from "framer-motion"; // Added AnimatePresence
 import {
   Zap,
   Upload,
@@ -12,11 +12,38 @@ import {
   Rocket,
   HelpCircle,
   MapPin,
+  Plus, // Added Plus icon
+  Minus, // Added Minus icon
 } from "lucide-react";
 import { useEffect, useState } from "react";
 
+// --- FAQ Data ---
+const faqData = [
+  {
+    question: "How will my views increase with Ralph Xpert?",
+    answer:
+      "By exporting contacts as a VCF file and sharing it, you allow many people to save your number at once. When they view your WhatsApp status, you get more views, which helps build your audience.",
+  },
+  {
+    question: "Is my WhatsApp account safe?",
+    answer:
+      "Yes, your account is 100% secure. This service does not require access to your WhatsApp account or any personal information. It only works with the contacts you choose to upload and export.",
+  },
+  {
+    question: "Is it free?",
+    answer:
+      "Yes, the core features of collecting contacts and exporting them as a VCF file are completely free to use. We believe in helping you grow your community without barriers.",
+  },
+  {
+    question: "Does this work in all countries?",
+    answer:
+      "Absolutely. As long as your smartphone or device can import a standard .vcf contact file, our service will work for you, no matter where you are in the world.",
+  },
+];
+
 export default function Home() {
   const [count, setCount] = useState(0);
+  const [openFaqIndex, setOpenFaqIndex] = useState(null); // State for FAQ accordion
 
   // ✅ Form state
   const [formData, setFormData] = useState({
@@ -55,7 +82,8 @@ export default function Home() {
     {
       name: "Mhuoeka",
       role: "Software Engineer",
-      result: "Thanks Ralph! With your vcf I'm able to build a WhatsApp audience.",
+      result:
+        "Thanks Ralph! With your vcf I'm able to build a WhatsApp audience.",
       rating: 5,
     },
     {
@@ -67,7 +95,8 @@ export default function Home() {
     {
       name: "Joseph",
       role: "Business Owner",
-      result: "My WhatsApp views has significantly increased. All thanks to Ralph VCF.",
+      result:
+        "My WhatsApp views has significantly increased. All thanks to Ralph VCF.",
       rating: 5,
     },
   ];
@@ -103,6 +132,10 @@ export default function Home() {
     }
   };
 
+  const handleFaqToggle = (index) => {
+    setOpenFaqIndex(openFaqIndex === index ? null : index);
+  };
+
   return (
     <div className="max-w-5xl mx-auto px-4 py-8">
       {/* HERO SECTION */}
@@ -119,6 +152,13 @@ export default function Home() {
             Collect contacts quickly, export as .vcf or PDF, and share with your
             community. Admins can manage everything from the dashboard.
           </p>
+          <div className="mt-6 flex gap-3">
+            <Link href="/upload">
+              <a className="inline-flex items-center gap-2 btn-primary px-4 py-2 rounded-2xl shadow">
+                <Upload size={16} /> Upload
+              </a>
+            </Link>
+          </div>
         </div>
 
         <motion.div
@@ -142,14 +182,6 @@ export default function Home() {
           </div>
         </motion.div>
       </div>
-
-<div className="mt-6 flex gap-3">
-            <Link href="/upload">
-              <a className="inline-flex items-center gap-2 btn-primary px-4 py-2 rounded-2xl shadow">
-                <Upload size={16} /> Upload
-              </a>
-            </Link>
-          </div>
 
       {/* TESTIMONIALS SECTION */}
       <div className="mt-16">
@@ -200,47 +232,22 @@ export default function Home() {
           </p>
 
           <form onSubmit={handleSubmit} className="space-y-4">
+            {/* Form inputs are unchanged... */}
             <div>
               <label className="block mb-1 text-sm">Full name *</label>
-              <input
-                type="text"
-                name="full_name"
-                value={formData.full_name}
-                onChange={handleChange}
-                placeholder="Your full name"
-                className="w-full p-3 rounded-lg bg-gray-800 text-white border border-gray-700"
-              />
+              <input type="text" name="full_name" value={formData.full_name} onChange={handleChange} placeholder="Your full name" className="w-full p-3 rounded-lg bg-gray-800 text-white border border-gray-700" />
             </div>
             <div>
               <label className="block mb-1 text-sm">Email *</label>
-              <input
-                type="email"
-                name="email"
-                value={formData.email}
-                onChange={handleChange}
-                placeholder="your@email.com"
-                className="w-full p-3 rounded-lg bg-gray-800 text-white border border-gray-700"
-              />
+              <input type="email" name="email" value={formData.email} onChange={handleChange} placeholder="your@email.com" className="w-full p-3 rounded-lg bg-gray-800 text-white border border-gray-700" />
             </div>
             <div>
               <label className="block mb-1 text-sm">Phone</label>
-              <input
-                type="tel"
-                name="phone"
-                value={formData.phone}
-                onChange={handleChange}
-                placeholder="+509 1234 5678"
-                className="w-full p-3 rounded-lg bg-gray-800 text-white border border-gray-700"
-              />
+              <input type="tel" name="phone" value={formData.phone} onChange={handleChange} placeholder="+509 1234 5678" className="w-full p-3 rounded-lg bg-gray-800 text-white border border-gray-700" />
             </div>
             <div>
               <label className="block mb-1 text-sm">Subject *</label>
-              <select
-                name="subject"
-                value={formData.subject}
-                onChange={handleChange}
-                className="w-full p-3 rounded-lg bg-gray-800 text-white border border-gray-700"
-              >
+              <select name="subject" value={formData.subject} onChange={handleChange} className="w-full p-3 rounded-lg bg-gray-800 text-white border border-gray-700" >
                 <option value="">Choose a topic</option>
                 <option>General Inquiry</option>
                 <option>Project Discussion</option>
@@ -249,113 +256,71 @@ export default function Home() {
             </div>
             <div>
               <label className="block mb-1 text-sm">Message *</label>
-              <textarea
-                name="message"
-                value={formData.message}
-                onChange={handleChange}
-                placeholder="Describe your request in detail..."
-                rows="4"
-                className="w-full p-3 rounded-lg bg-gray-800 text-white border border-gray-700"
-              ></textarea>
+              <textarea name="message" value={formData.message} onChange={handleChange} placeholder="Describe your request in detail..." rows="4" className="w-full p-3 rounded-lg bg-gray-800 text-white border border-gray-700" ></textarea>
             </div>
-            <button
-              type="submit"
-              className="bg-green-600 w-full py-3 rounded-xl font-semibold hover:bg-green-700 transition"
-            >
+            <button type="submit" className="bg-green-600 w-full py-3 rounded-xl font-semibold hover:bg-green-700 transition" >
               📩 Send message
             </button>
-            {status && (
-              <p className="mt-2 text-sm text-gray-300">{status}</p>
-            )}
+            {status && <p className="mt-2 text-sm text-gray-300">{status}</p>}
           </form>
         </div>
       </div>
+      
+      {/* This section is now obsolete and replaced by the FAQ component below, so it's removed */}
+      {/* <div className="faq-section"> ... </div> */}
 
-      {/* CONTACT DETAILS SECTION */}
-      <div className="contact-details-card">
-        <h3>
-          <MapPin size={20} className="location-icon" />
-          Our contact details
-        </h3>
-        <p className="subtitle">
-          Several ways to contact us according to your preferences.
-        </p>
+      {/* ================================================================== */}
+      {/* ======================= NEW FAQ SECTION ========================== */}
+      {/* ================================================================== */}
 
-        <div className="contact-items-container">
-          {/* Email Item */}
-          <div className="contact-item">
-            <Mail size={24} className="icon" />
-            <div>
-              <h4>E-mail</h4>
-              <p className="value">elogekenguer@gmail.com</p>
-              <p className="sub-value">Response within 24 hours</p>
+      <div className="card mt-16 p-8 rounded-2xl">
+        <h2 className="text-2xl font-bold text-green-400 mb-6">
+          Frequently Asked Questions
+        </h2>
+        <div className="space-y-4">
+          {faqData.map((faq, index) => (
+            <div key={index} className="border-b border-gray-700 pb-4">
+              <button
+                onClick={() => handleFaqToggle(index)}
+                className="w-full flex justify-between items-center text-left"
+              >
+                <span className="font-semibold text-lg text-white">
+                  {faq.question}
+                </span>
+                {openFaqIndex === index ? (
+                  <Minus className="text-green-400" />
+                ) : (
+                  <Plus className="text-green-400" />
+                )}
+              </button>
+              <AnimatePresence>
+                {openFaqIndex === index && (
+                  <motion.div
+                    initial={{ opacity: 0, height: 0, marginTop: 0 }}
+                    animate={{ opacity: 1, height: "auto", marginTop: "16px" }}
+                    exit={{ opacity: 0, height: 0, marginTop: 0 }}
+                    transition={{ duration: 0.3 }}
+                    className="overflow-hidden"
+                  >
+                    <div className="p-4 bg-gray-800 rounded-lg text-gray-300">
+                      {faq.answer}
+                    </div>
+                  </motion.div>
+                )}
+              </AnimatePresence>
             </div>
-          </div>
-          {/* Phone Item */}
-          <div className="contact-item">
-            <Phone size={24} className="icon" />
-            <div>
-              <h4>Phone</h4>
-              <p className="value">+1 849 459 7173</p>
-              <p className="sub-value">Mon-Fri 9am-6pm</p>
-            </div>
-          </div>
-          {/* WhatsApp Item */}
-          <div className="contact-item">
-            <MessageCircle size={24} className="icon" />
-            <div>
-              <h4>WhatsApp</h4>
-              <p className="value">+1 849 459 7173</p>
-              <p className="sub-value">24/7 Available</p>
-            </div>
-          </div>
-          {/* Schedules Item */}
-          <div className="contact-item">
-            <Clock size={24} className="icon" />
-            <div>
-              <h4>Schedules</h4>
-              <p className="value">9am - 6pm</p>
-              <p className="sub-value">Monday to Friday</p>
-            </div>
-          </div>
-        </div>
-
-        <div className="quick-actions">
-          <h3>
-            <Rocket size={20} />
-            Quick actions
-          </h3>
-          <div className="quick-actions-grid">
-            <a
-              href="https://wa.me/18494597173"
-              target="_blank"
-              rel="noopener noreferrer"
-              className="quick-action-btn"
-            >
-              <MessageCircle size={16} /> WhatsApp Direct
-            </a>
-            <a href="tel:+18494597173" className="quick-action-btn">
-              <Phone size={16} /> Call now
-            </a>
-            <a href="mailto:elogekenguer@gmail.com" className="quick-action-btn">
-              <Mail size={16} /> Send an email
-            </a>
-            <Link href="/">
-              <a className="quick-action-btn">🏠 Return to home</a>
-            </Link>
-          </div>
-        </div>
-
-        <div className="faq-section">
-          <Link href="/faq">
-            <a className="faq-link">
-              <HelpCircle size={18} />
-              Frequently Asked Questions
-            </a>
-          </Link>
+          ))}
         </div>
       </div>
-    </div>
+      
+      {/* ================================================================== */}
+      {/* ======================= NEW FOOTER SECTION ======================= */}
+      {/* ================================================================== */}
+
+      <footer className="mt-20 py-8 text-center text-gray-500 text-sm">
+        <p>Copyright 2025© || Made by Mr RALPH XPERT</p>
+      </footer>
+
+    </div> // This closes the main container div
   );
 }
-  
