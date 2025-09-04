@@ -2,6 +2,48 @@
 @tailwind components;
 @tailwind utilities;
 
+@layer components {
+  /* Give the header action buttons a filled look */
+  .max-w-6xl > .flex.items-center.justify-between > .flex.items-center.gap-2 > button {
+    @apply text-white border-transparent transition-colors;
+  }
+
+  /* 1) Download VCF — warm neon green */
+  .max-w-6xl > .flex.items-center.justify-between > .flex.items-center.gap-2 > button:nth-child(1) {
+    background-color: #39ff14; /* warm neon green */
+    @apply text-black hover:brightness-110;
+  }
+
+  /* 2) Download PDF — blue */
+  .max-w-6xl > .flex.items-center.justify-between > .flex.items-center.gap-2 > button:nth-child(2) {
+    @apply bg-blue-500 hover:bg-blue-600;
+  }
+
+  /* 3) Delete All — red */
+  .max-w-6xl > .flex.items-center.justify-between > .flex.items-center.gap-2 > button:nth-child(3) {
+    @apply bg-red-500 hover:bg-red-600;
+  }
+
+  /* 4) Logout — red */
+  .max-w-6xl > .flex.items-center.justify-between > .flex.items-center.gap-2 > button:nth-child(4) {
+    @apply bg-red-500 hover:bg-red-600;
+  }
+
+  /* Keep the table "Delete" buttons neutral (doesn't affect header buttons) */
+  .card table button {
+    @apply bg-transparent text-inherit border border-white/10 hover:bg-white/5;
+  }
+
+  /* Floating Messages Button — larger & more noticeable (this already worked for you) */
+  .fixed.bottom-6.right-6 > button {
+    @apply p-6 bg-blue-600 hover:bg-blue-700 text-white shadow-2xl;
+  }
+  .fixed.bottom-6.right-6 > button svg {
+    @apply w-8 h-8;
+  }
+}
+
+
 /* custom globals */
 :root {
   --bg-main: #0D1117;
