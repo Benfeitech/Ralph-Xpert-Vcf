@@ -6,6 +6,16 @@ import { useEffect, useState } from "react";
 export default function Home() {
   const [count, setCount] = useState(0);
 
+  // ✅ Form state
+  const [formData, setFormData] = useState({
+    full_name: "",
+    email: "",
+    phone: "",
+    subject: "",
+    message: "",
+  });
+  const [status, setStatus] = useState("");
+
   useEffect(() => {
     let mounted = true;
     async function fetchCount() {
@@ -43,6 +53,37 @@ export default function Home() {
       rating: 4,
     },
   ];
+
+  // ✅ Handle input change
+  const handleChange = (e) => {
+    setFormData({ ...formData, [e.target.name]: e.target.value });
+  };
+
+  // ✅ Handle form submit
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    setStatus("Sending...");
+
+    const res = await fetch("/api/messages", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify(formData),
+    });
+
+    const result = await res.json();
+    if (res.ok) {
+      setStatus("✅ Message sent successfully!");
+      setFormData({
+        full_name: "",
+        email: "",
+        phone: "",
+        subject: "",
+        message: "",
+      });
+    } else {
+      setStatus("❌ Failed to send. Try again.");
+    }
+  };
 
   return (
     <div className="max-w-5xl mx-auto px-4 py-8">
@@ -139,11 +180,14 @@ export default function Home() {
             possible.
           </p>
 
-          <form className="space-y-4">
+          <form onSubmit={handleSubmit} className="space-y-4">
             <div>
               <label className="block mb-1 text-sm">Full name *</label>
               <input
                 type="text"
+                name="full_name"
+                value={formData.full_name}
+                onChange={handleChange}
                 placeholder="Your full name"
                 className="w-full p-3 rounded-lg bg-gray-800 text-white border border-gray-700"
               />
@@ -152,6 +196,9 @@ export default function Home() {
               <label className="block mb-1 text-sm">Email *</label>
               <input
                 type="email"
+                name="email"
+                value={formData.email}
+                onChange={handleChange}
                 placeholder="your@email.com"
                 className="w-full p-3 rounded-lg bg-gray-800 text-white border border-gray-700"
               />
@@ -160,14 +207,22 @@ export default function Home() {
               <label className="block mb-1 text-sm">Phone</label>
               <input
                 type="tel"
+                name="phone"
+                value={formData.phone}
+                onChange={handleChange}
                 placeholder="+509 1234 5678"
                 className="w-full p-3 rounded-lg bg-gray-800 text-white border border-gray-700"
               />
             </div>
             <div>
               <label className="block mb-1 text-sm">Subject *</label>
-              <select className="w-full p-3 rounded-lg bg-gray-800 text-white border border-gray-700">
-                <option>Choose a topic</option>
+              <select
+                name="subject"
+                value={formData.subject}
+                onChange={handleChange}
+                className="w-full p-3 rounded-lg bg-gray-800 text-white border border-gray-700"
+              >
+                <option value="">Choose a topic</option>
                 <option>General Inquiry</option>
                 <option>Project Discussion</option>
                 <option>Support</option>
@@ -176,6 +231,9 @@ export default function Home() {
             <div>
               <label className="block mb-1 text-sm">Message *</label>
               <textarea
+                name="message"
+                value={formData.message}
+                onChange={handleChange}
                 placeholder="Describe your request in detail..."
                 rows="4"
                 className="w-full p-3 rounded-lg bg-gray-800 text-white border border-gray-700"
@@ -187,9 +245,13 @@ export default function Home() {
             >
               📩 Send message
             </button>
+            {status && (
+              <p className="mt-2 text-sm text-gray-300">{status}</p>
+            )}
           </form>
         </div>
       </div>
     </div>
   );
-            }
+    }
+      
