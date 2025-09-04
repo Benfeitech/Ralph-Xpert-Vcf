@@ -215,3 +215,37 @@ html, body, #__next {
 .faq-link:hover {
   color: #ffffff; /* hover:text-white */
   }
+@layer components {
+  /* Download VCF button - warm neon green */
+  button:has(svg + span:contains("Download VCF")),
+  button:has(svg + text:contains("Download VCF")) {
+    @apply bg-green-500 hover:bg-green-600 text-white;
+  }
+
+  /* Download PDF button - blue */
+  button:has(svg + span:contains("Download PDF")),
+  button:has(svg + text:contains("Download PDF")) {
+    @apply bg-blue-500 hover:bg-blue-600 text-white;
+  }
+
+  /* Delete All button - red */
+  button:has(svg + span:contains("Delete All")),
+  button:has(svg + text:contains("Delete All")) {
+    @apply bg-red-500 hover:bg-red-600 text-white;
+  }
+
+  /* Logout button - red */
+  button:has(svg + span:contains("Logout")),
+  button:has(svg + text:contains("Logout")) {
+    @apply bg-red-500 hover:bg-red-600 text-white;
+  }
+
+  /* Floating Messages Button - make bigger & noticeable */
+  .fixed.bottom-6.right-6 button {
+    @apply p-6 bg-blue-600 hover:bg-blue-700 text-white shadow-2xl;
+  }
+  .fixed.bottom-6.right-6 button svg {
+    @apply w-8 h-8; /* make the message icon larger */
+  }
+             }
+             
