@@ -280,85 +280,84 @@ export default function Home() {
       {/* ============ NEW CONTACT DETAILS SECTION FROM IMAGE ============== */}
       {/* ================================================================== */}
 
-      <div className="card mt-16 p-8 rounded-2xl">
-        <h3 className="text-xl font-semibold flex items-center gap-2">
-          <MapPin size={20} className="text-red-500" />
+    
+      <div className="contact-details-card">
+        <h3>
+          <MapPin size={20} className="location-icon" />
           Our contact details
         </h3>
-        <p className="text-gray-400 mt-1">
+        <p className="subtitle">
           Several ways to contact us according to your preferences.
         </p>
 
-        <div className="mt-6 space-y-4">
-          <ContactInfo
-            icon={<Mail size={24} />}
-            title="E-mail"
-            value="elogekenguer@gmail.com"
-            subValue="Response within 24 hours"
-          />
-          <ContactInfo
-            icon={<Phone size={24} />}
-            title="Phone"
-            value="+1 849 459 7173"
-            subValue="Mon-Fri 9am-6pm"
-          />
-          <ContactInfo
-            icon={<MessageCircle size={24} />} // Using MessageCircle for WhatsApp
-            title="WhatsApp"
-            value="+1 849 459 7173"
-            subValue="24/7 Available"
-          />
-          <ContactInfo
-            icon={<Clock size={24} />}
-            title="Schedules"
-            value="9am - 6pm"
-            subValue="Monday to Friday"
-          />
+        <div className="contact-items-container">
+          {/* Email Item */}
+          <div className="contact-item">
+            <Mail size={24} className="icon" />
+            <div>
+              <h4>E-mail</h4>
+              <p className="value">elogekenguer@gmail.com</p>
+              <p className="sub-value">Response within 24 hours</p>
+            </div>
+          </div>
+          {/* Phone Item */}
+          <div className="contact-item">
+            <Phone size={24} className="icon" />
+            <div>
+              <h4>Phone</h4>
+              <p className="value">+1 849 459 7173</p>
+              <p className="sub-value">Mon-Fri 9am-6pm</p>
+            </div>
+          </div>
+          {/* WhatsApp Item */}
+          <div className="contact-item">
+            <MessageCircle size={24} className="icon" />
+            <div>
+              <h4>WhatsApp</h4>
+              <p className="value">+1 849 459 7173</p>
+              <p className="sub-value">24/7 Available</p>
+            </div>
+          </div>
+          {/* Schedules Item */}
+          <div className="contact-item">
+            <Clock size={24} className="icon" />
+            <div>
+              <h4>Schedules</h4>
+              <p className="value">9am - 6pm</p>
+              <p className="sub-value">Monday to Friday</p>
+            </div>
+          </div>
         </div>
 
-        <div className="mt-10">
-          <h3 className="text-lg font-semibold flex items-center gap-2">
+        <div className="quick-actions">
+          <h3>
             <Rocket size={20} />
             Quick actions
           </h3>
-          <div className="grid grid-cols-2 gap-4 mt-4">
-            <a
-              href="https://wa.me/18494597173"
-              target="_blank"
-              rel="noopener noreferrer"
-              className="flex items-center justify-center gap-2 p-3 rounded-lg bg-gray-700 hover:bg-gray-600 transition"
-            >
+          <div className="quick-actions-grid">
+            <a href="https://wa.me/18494597173" target="_blank" rel="noopener noreferrer" className="quick-action-btn">
               <MessageCircle size={16} /> WhatsApp Direct
             </a>
-            <a
-              href="tel:+18494597173"
-              className="flex items-center justify-center gap-2 p-3 rounded-lg bg-gray-700 hover:bg-gray-600 transition"
-            >
+            <a href="tel:+18494597173" className="quick-action-btn">
               <Phone size={16} /> Call now
             </a>
-            <a
-              href="mailto:elogekenguer@gmail.com"
-              className="flex items-center justify-center gap-2 p-3 rounded-lg bg-gray-700 hover:bg-gray-600 transition"
-            >
+            <a href="mailto:elogekenguer@gmail.com" className="quick-action-btn">
               <Mail size={16} /> Send an email
             </a>
             <Link href="/">
-              <a className="flex items-center justify-center gap-2 p-3 rounded-lg bg-gray-700 hover:bg-gray-600 transition">
+              <a className="quick-action-btn">
                 🏠 Return to home
               </a>
             </Link>
           </div>
         </div>
 
-        <div className="text-center mt-10">
+        <div className="faq-section">
           <Link href="/faq">
-            <a className="inline-flex items-center gap-2 text-gray-400 hover:text-white">
+            <a className="faq-link">
               <HelpCircle size={18} />
               Frequently Asked Questions
             </a>
           </Link>
         </div>
       </div>
-    </div>
-  );
-        }
