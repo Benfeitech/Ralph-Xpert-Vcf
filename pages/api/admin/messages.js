@@ -1,5 +1,5 @@
 // pages/admin/messages.js
-import { useState, useEffect } from "react";
+import { useState } from "react";
 import { supabase } from "../../lib/supabaseClient";
 
 export default function AdminMessages() {
@@ -7,12 +7,16 @@ export default function AdminMessages() {
   const [unlocked, setUnlocked] = useState(false);
   const [messages, setMessages] = useState([]);
 
-  // ✅ This password is stored in your Vercel environment
-  const correctPassword = process.env.ADMIN_PASS;
-
   async function handleLogin(e) {
     e.preventDefault();
-    if (password === correctPassword) {
+
+    const res = await fetch("/api/admin/login", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ password }),
+    });
+
+    if (res.ok) {
       setUnlocked(true);
       await loadMessages();
     } else {
@@ -25,8 +29,12 @@ export default function AdminMessages() {
       .from("messages")
       .select("*")
       .order("created_at", { ascending: false });
-    if (error) console.error(error);
-    else setMessages(data);
+
+    if (error) {
+      console.error("Supabase fetch error:", error);
+    } else {
+      setMessages(data || []);
+    }
   }
 
   return (
@@ -69,7 +77,9 @@ export default function AdminMessages() {
                       {new Date(m.created_at).toLocaleString()}
                     </span>
                   </div>
-                  <p className="text-sm text-gray-300">{m.email} | {m.phone}</p>
+                  <p className="text-sm text-gray-300">
+                    {m.email} {m.phone && `| ${m.phone}`}
+                  </p>
                   <p className="mt-2 text-green-400 font-medium">{m.subject}</p>
                   <p className="mt-1">{m.message}</p>
                 </div>
@@ -80,5 +90,5 @@ export default function AdminMessages() {
       )}
     </div>
   );
-}
-  
+        }
+    
