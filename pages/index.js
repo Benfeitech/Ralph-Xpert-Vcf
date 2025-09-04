@@ -12,7 +12,7 @@ import {
   Rocket,
   HelpCircle,
   MapPin,
-} from "lucide-react"; 
+} from "lucide-react";
 import { useEffect, useState } from "react";
 
 export default function Home() {
@@ -46,15 +46,32 @@ export default function Home() {
   }, []);
 
   const testimonials = [
-    { name: "Aisha", role: "Product Designer", result: "Got the PDF instantly.", rating: 5 },
-    { name: "Chinedu", role: "Software Engineer", result: "Smooth upload and export.", rating: 5 },
-    { name: "Zainab", role: "Marketer", result: "The community is buzzing!", rating: 4 },
+    {
+      name: "Aisha",
+      role: "Product Designer",
+      result: "Got the PDF instantly.",
+      rating: 5,
+    },
+    {
+      name: "Chinedu",
+      role: "Software Engineer",
+      result: "Smooth upload and export.",
+      rating: 5,
+    },
+    {
+      name: "Zainab",
+      role: "Marketer",
+      result: "The community is buzzing!",
+      rating: 4,
+    },
   ];
 
+  // ✅ Handle input change
   const handleChange = (e) => {
     setFormData({ ...formData, [e.target.name]: e.target.value });
   };
 
+  // ✅ Handle form submit
   const handleSubmit = async (e) => {
     e.preventDefault();
     setStatus("Sending...");
@@ -68,7 +85,13 @@ export default function Home() {
     const result = await res.json();
     if (res.ok) {
       setStatus("✅ Message sent successfully!");
-      setFormData({ full_name: "", email: "", phone: "", subject: "", message: "" });
+      setFormData({
+        full_name: "",
+        email: "",
+        phone: "",
+        subject: "",
+        message: "",
+      });
     } else {
       setStatus("❌ Failed to send. Try again.");
     }
@@ -91,13 +114,19 @@ export default function Home() {
             community. Admins can manage everything from the dashboard.
           </p>
           <div className="mt-6 flex gap-3">
-            <Link href="/upload" className="inline-flex items-center gap-2 btn-primary px-4 py-2 rounded-2xl shadow">
-              <Upload size={16} /> Upload
+            <Link href="/upload">
+              <a className="inline-flex items-center gap-2 btn-primary px-4 py-2 rounded-2xl shadow">
+                <Upload size={16} /> Upload
+              </a>
             </Link>
           </div>
         </div>
 
-        <motion.div initial={{ opacity: 0, scale: 0.98 }} animate={{ opacity: 1, scale: 1 }} className="card rounded-2xl p-6">
+        <motion.div
+          initial={{ opacity: 0, scale: 0.98 }}
+          animate={{ opacity: 1, scale: 1 }}
+          className="card rounded-2xl p-6"
+        >
           <div className="grid grid-cols-3 gap-4">
             <div className="p-4 rounded-xl bg-white/3">
               <div className="text-sm text-gray-300">Total Contacts</div>
@@ -120,7 +149,11 @@ export default function Home() {
         <h2 className="text-2xl font-bold">Testimonials</h2>
         <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-4 mt-6">
           {testimonials.map((t) => (
-            <motion.div whileHover={{ y: -6 }} key={t.name} className="card rounded-2xl p-5">
+            <motion.div
+              whileHover={{ y: -6 }}
+              key={t.name}
+              className="card rounded-2xl p-5"
+            >
               <div className="flex items-center justify-between">
                 <div>
                   <div className="font-semibold">{t.name}</div>
@@ -224,7 +257,9 @@ export default function Home() {
             >
               📩 Send message
             </button>
-            {status && <p className="mt-2 text-sm text-gray-300">{status}</p>}
+            {status && (
+              <p className="mt-2 text-sm text-gray-300">{status}</p>
+            )}
           </form>
         </div>
       </div>
@@ -235,9 +270,12 @@ export default function Home() {
           <MapPin size={20} className="location-icon" />
           Our contact details
         </h3>
-        <p className="subtitle">Several ways to contact us according to your preferences.</p>
+        <p className="subtitle">
+          Several ways to contact us according to your preferences.
+        </p>
 
         <div className="contact-items-container">
+          {/* Email Item */}
           <div className="contact-item">
             <Mail size={24} className="icon" />
             <div>
@@ -246,6 +284,7 @@ export default function Home() {
               <p className="sub-value">Response within 24 hours</p>
             </div>
           </div>
+          {/* Phone Item */}
           <div className="contact-item">
             <Phone size={24} className="icon" />
             <div>
@@ -254,6 +293,7 @@ export default function Home() {
               <p className="sub-value">Mon-Fri 9am-6pm</p>
             </div>
           </div>
+          {/* WhatsApp Item */}
           <div className="contact-item">
             <MessageCircle size={24} className="icon" />
             <div>
@@ -262,6 +302,7 @@ export default function Home() {
               <p className="sub-value">24/7 Available</p>
             </div>
           </div>
+          {/* Schedules Item */}
           <div className="contact-item">
             <Clock size={24} className="icon" />
             <div>
@@ -278,7 +319,12 @@ export default function Home() {
             Quick actions
           </h3>
           <div className="quick-actions-grid">
-            <a href="https://wa.me/18494597173" target="_blank" rel="noopener noreferrer" className="quick-action-btn">
+            <a
+              href="https://wa.me/18494597173"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="quick-action-btn"
+            >
               <MessageCircle size={16} /> WhatsApp Direct
             </a>
             <a href="tel:+18494597173" className="quick-action-btn">
@@ -287,20 +333,22 @@ export default function Home() {
             <a href="mailto:elogekenguer@gmail.com" className="quick-action-btn">
               <Mail size={16} /> Send an email
             </a>
-            <Link href="/" className="quick-action-btn">
-              🏠 Return to home
+            <Link href="/">
+              <a className="quick-action-btn">🏠 Return to home</a>
             </Link>
           </div>
         </div>
 
         <div className="faq-section">
-          <Link href="/faq" className="faq-link">
-            <HelpCircle size={18} />
-            Frequently Asked Questions
+          <Link href="/faq">
+            <a className="faq-link">
+              <HelpCircle size={18} />
+              Frequently Asked Questions
+            </a>
           </Link>
         </div>
       </div>
     </div>
   );
-          }
-    
+}
+  
