@@ -49,13 +49,13 @@ export default function Home() {
     {
       name: "Aisha",
       role: "Product Designer",
-      result: "Got the PDF instantly.",
+      result: "Got the VCF instantly.",
       rating: 5,
     },
     {
-      name: "Chinedu",
+      name: "Mhuoeka",
       role: "Software Engineer",
-      result: "Smooth upload and export.",
+      result: "Thanks Ralph! With your vcf I'm able to build a WhatsApp audience.",
       rating: 5,
     },
     {
@@ -63,6 +63,12 @@ export default function Home() {
       role: "Marketer",
       result: "The community is buzzing!",
       rating: 4,
+    },
+    {
+      name: "Joseph",
+      role: "Business Owner",
+      result: "My WhatsApp views has significantly increased. All thanks to Ralph VCF.",
+      rating: 5,
     },
   ];
 
@@ -113,13 +119,6 @@ export default function Home() {
             Collect contacts quickly, export as .vcf or PDF, and share with your
             community. Admins can manage everything from the dashboard.
           </p>
-          <div className="mt-6 flex gap-3">
-            <Link href="/upload">
-              <a className="inline-flex items-center gap-2 btn-primary px-4 py-2 rounded-2xl shadow">
-                <Upload size={16} /> Upload
-              </a>
-            </Link>
-          </div>
         </div>
 
         <motion.div
@@ -143,6 +142,14 @@ export default function Home() {
           </div>
         </motion.div>
       </div>
+
+<div className="mt-6 flex gap-3">
+            <Link href="/upload">
+              <a className="inline-flex items-center gap-2 btn-primary px-4 py-2 rounded-2xl shadow">
+                <Upload size={16} /> Upload
+              </a>
+            </Link>
+          </div>
 
       {/* TESTIMONIALS SECTION */}
       <div className="mt-16">
