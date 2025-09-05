@@ -12,12 +12,12 @@ export default function handler(req,res) {
   }
 
   if (username === ADMIN_USER && password === ADMIN_PASS) {
-    const token = jwt.sign({ sub: ADMIN_USER }, JWT_SECRET, { expiresIn: "6h" });
+    const token = jwt.sign({ sub: ADMIN_USER }, JWT_SECRET, { expiresIn: "2h" });
     // set httpOnly cookie
     res.setHeader("Set-Cookie", `admin_token=${token}; HttpOnly; Path=/; Max-Age=${60*60*6}; SameSite=Strict; Secure=${process.env.NODE_ENV==='production'}`);
     return res.status(200).json({ ok: true });
   } else {
-    return res.status(401).json({ error: "Invalid credentials" });
+    return res.status(401).json({ error: "⚠️Unathorized Access! Only developer can access for now 😒." });
   }
 }
   
