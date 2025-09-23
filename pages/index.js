@@ -319,7 +319,7 @@ export default function Home() {
       {/* ================================================================== */}
 
       <footer className="mt-20 py-8 text-center text-gray-500 text-sm">
-        <p>Copyright 2025© || Made by Mr RALPH XPERT</p>
+        <p>Copyright 2025© || Powered by Benfei Tech </p>
       </footer>
 
     </div> // This closes the main container div
